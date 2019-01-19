@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">CruzHacks2019</string>
+    <string name="submit">Submit</string>
+    <string name="locate">Locate</string>
+    <string name="get_code">Get Code</string>
+    <string name="placeholder_value">Location Placeholder Value</string>
+    <string name="i_already_have_one">I already have one</string>
+    <string name="scan_code">Scan Code</string>
+    <string name="submit_picture">Submit Picture</string>
+    <string name="go">Go!</string>
+    <string name="scan">Scan</string>
+    <string name="map">Map</string>
+    <string name="take_a_picture">Take A Picture</string>
+    <string name="share">Share</string>
 </resources>
