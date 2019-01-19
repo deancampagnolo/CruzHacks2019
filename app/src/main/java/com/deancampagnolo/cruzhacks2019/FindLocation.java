@@ -147,7 +147,11 @@ public class FindLocation extends AppCompatActivity {
         switch (v.getId()){
             case R.id.FindLocationScan:
                 //TODO Implement Scan QR
-                startActivity(new Intent(this, ShareAchievements.class));
+
+                if(true){//TODO input QR CODE CHECKER
+                    startActivity(new Intent(this, ShareAchievements.class));
+                }
+
                 break;
 
             case R.id.MapButton:
