@@ -1,4 +1,4 @@
-package com.deancampagnolo.naturehacks;
+package com.deancampagnolo.cruzhacks2019;
 
 import org.junit.Test;
 
