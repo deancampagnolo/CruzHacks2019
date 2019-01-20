@@ -1,11 +1,17 @@
 package com.deancampagnolo.cruzhacks2019;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,10 +22,19 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static android.graphics.Bitmap.CompressFormat.PNG;
+
 public class SubmitLocation extends AppCompatActivity {
 
     private ImageView takeHider;
     private ImageView goHider;
+    private ImageView picture;
     private ImageButton submitPic;
     private ImageButton goButton;
     private LocationManager locationManager;
@@ -35,6 +50,7 @@ public class SubmitLocation extends AppCompatActivity {
         goHider=findViewById(R.id.IVhidesGo);
         submitPic=findViewById(R.id.SubmitPicture);
         goButton=findViewById(R.id.Go);
+        picture = findViewById(R.id.picture);
 
         userLatitude = 0;
         userLongitude = 0;
@@ -117,6 +133,11 @@ public class SubmitLocation extends AppCompatActivity {
 
                 if(userLatitude != 0 && userLongitude != 0){
 
+                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(i,0);
+
+
+
                 }
 
                 unhideGo();
@@ -139,5 +160,15 @@ public class SubmitLocation extends AppCompatActivity {
     public void unhideGo(){
 
     goHider.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        picture.setImageBitmap(bitmap);
+
+
+
     }
 }

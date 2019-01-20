@@ -68,14 +68,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng userLocation = new LatLng(userLatitude,userLongitude);
         CircleOptions locationCircleOptions = new CircleOptions();
         locationCircleOptions.center(location);
-        locationCircleOptions.radius(30);
+        locationCircleOptions.radius(20000);
         locationCircleOptions.strokeColor(Color.RED);
         locationCircleOptions.fillColor(Color.LTGRAY);
         mMap.addCircle(locationCircleOptions);
 
 
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Where User is"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         //mMap.setMinZoomPreference(14);
     }
 
