@@ -16,7 +16,7 @@ public class GetCode extends AppCompatActivity {
     public void onButtonClicked(View v){
         switch(v.getId()){
             case R.id.GetCode:
-                //TODO Implement
+                startActivity(new Intent(this, SendEmailCode.class));
                 break;
 
             case R.id.ContinueToSubmit:

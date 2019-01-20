@@ -14,19 +14,27 @@
         android:layout_marginTop="128dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorPrimary"
+        android:onClick="onButtonClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/circlebackgroundblue" />
 
-    <Button
+    <ImageButton
         android:id="@+id/MapButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="120dp"
+        android:background="@color/colorPrimary"
         android:onClick="onButtonClicked"
-        android:text="@string/map"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="591dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/circlebackgroundblue" />
+
+
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -40,6 +48,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FindLocationScan" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:text="Use The Map!"
+        android:textColor="@color/marshmallow"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="91dp"
@@ -60,11 +84,35 @@
         app:layout_constraintTop_toTopOf="@+id/imageView8"
         app:srcCompat="@drawable/ic_texture_black_24dp" />
 
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
+        app:layout_constraintBottom_toBottomOf="@+id/MapButton"
+        app:layout_constraintEnd_toEndOf="@+id/MapButton"
+        app:layout_constraintStart_toStartOf="@+id/MapButton"
+        app:layout_constraintTop_toTopOf="@+id/MapButton"
+        app:srcCompat="@drawable/ic_crop_free_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+        app:layout_constraintEnd_toEndOf="@+id/imageView10"
+        app:layout_constraintStart_toStartOf="@+id/imageView10"
+        app:layout_constraintTop_toTopOf="@+id/imageView10"
+        app:srcCompat="@drawable/ic_texture_black_24dp" />
+
     <TextView
         android:id="@+id/GettingCloserText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="366dp" />
+        app:layout_constraintBottom_toTopOf="@+id/MapButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

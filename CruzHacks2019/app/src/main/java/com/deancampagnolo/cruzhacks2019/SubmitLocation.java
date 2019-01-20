@@ -21,12 +21,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import static android.graphics.Bitmap.CompressFormat.PNG;
 
@@ -41,6 +51,8 @@ public class SubmitLocation extends AppCompatActivity {
     private LocationListener locationListener;
     private double userLatitude;
     private double userLongitude;
+    private String barcodeData;
+    private Bitmap barcodeBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +136,8 @@ public class SubmitLocation extends AppCompatActivity {
             case R.id.ScanCode:
                 //TODO Implement
                 Log.v("Locationz", "ScanCode()");
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(i,1);
 
                 unhideTake();
                 break;
@@ -133,8 +147,8 @@ public class SubmitLocation extends AppCompatActivity {
 
                 if(userLatitude != 0 && userLongitude != 0){
 
-                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(i,0);
+                    Intent i2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(i2,0);
 
 
 
@@ -164,10 +178,53 @@ public class SubmitLocation extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        picture.setImageBitmap(bitmap);
 
+        switch (requestCode){
+            case 0:
+                super.onActivityResult(requestCode, resultCode, data);
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                picture.setImageBitmap(bitmap);
+
+            case 1:
+                super.onActivityResult(requestCode,resultCode,data);
+                barcodeBitmap= (Bitmap)data.getExtras().get("data");
+                //txt=findViewById(R.id.textView);
+                checkBarcode();
+
+        }
+
+
+
+
+    }
+    public void checkBarcode(){
+        FirebaseVisionImage image= FirebaseVisionImage.fromBitmap(barcodeBitmap);
+
+        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();
+
+
+        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
+                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+                    @Override
+                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+                        // Task completed successfully
+                        // ...
+                        Toast.makeText(SubmitLocation.this,"hi",Toast.LENGTH_LONG).show();
+                        for (FirebaseVisionBarcode barcode: barcodes){
+                            barcodeData=barcode.getDisplayValue();
+                            Toast.makeText(SubmitLocation.this,barcodeData,Toast.LENGTH_LONG).show();
+
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        // ...
+                    }
+                });
 
 
     }

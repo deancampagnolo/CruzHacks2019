@@ -3,11 +3,13 @@ package com.deancampagnolo.cruzhacks2019;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,11 +21,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+
+import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class FindLocation extends AppCompatActivity {
+
+    FirebaseVisionBarcodeDetectorOptions options =
+            new FirebaseVisionBarcodeDetectorOptions.Builder()
+                    .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE ).build();
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -39,20 +55,27 @@ public class FindLocation extends AppCompatActivity {
     private double userLongitude;
 
     private double lastDistance;
+    private String qrCode;
 
 
     private int gettingCloserColor;
+
+    private Bitmap bitmap;
+    private String barcodeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_location);
 
+        //FirebaseApp.initializeApp(this);
+
         gettingCloserColor = Color.GRAY;
 
         Intent lastIntent = getIntent();
         latitude = lastIntent.getDoubleExtra("latitude", 0);//goes to 0 if doesn't get value
         longitude = lastIntent.getDoubleExtra("longitude", 0);//goes to 0 if doesn't get value
+        qrCode = lastIntent.getStringExtra("qr");
 
         //initializing these values
         userLatitude = 0;
@@ -80,8 +103,8 @@ public class FindLocation extends AppCompatActivity {
                 }
 
                 counter++;
-                weAreGettingCloserText.setText(Integer.toString(counter));
-
+                //weAreGettingCloserText.setText(Integer.toString(counter));
+                weAreGettingCloserText.setText("Lat: "+userLatitude+"\n" + "Lng: "+userLongitude);
                 if(counter>10){
                     if(weAreGettingCloser(userLatitude,userLongitude)){
                         gettingCloserColor = Color.GREEN;
@@ -129,6 +152,10 @@ public class FindLocation extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 
+
+
+
+
     }
 
     @Override
@@ -146,11 +173,10 @@ public class FindLocation extends AppCompatActivity {
     public void onButtonClicked(View v){
         switch (v.getId()){
             case R.id.FindLocationScan:
-                //TODO Implement Scan QR
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,0);
 
-                if(true){//TODO input QR CODE CHECKER
-                    startActivity(new Intent(this, ShareAchievements.class));
-                }
+                //startActivity(new Intent(this, ShareAchievements.class));
 
                 break;
 
@@ -186,6 +212,50 @@ public class FindLocation extends AppCompatActivity {
 
     private double calculateDistance(double currentLatitude, double currentLongitude){
         return  Math.sqrt(Math.pow((latitude-currentLatitude),2) + Math.pow((longitude-currentLongitude),2));
+    }
+
+    public void onActivityResult(int requestCode,int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        bitmap= (Bitmap)data.getExtras().get("data");
+        //txt=findViewById(R.id.textView);
+        checkBarcode();
+
+    }
+
+    public void checkBarcode(){
+        FirebaseVisionImage image= FirebaseVisionImage.fromBitmap(bitmap);
+
+        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();
+
+
+        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
+                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+                    @Override
+                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+                        // Task completed successfully
+                        // ...
+                        for (FirebaseVisionBarcode barcode: barcodes){
+                            barcodeData=barcode.getDisplayValue();
+                            Toast.makeText(FindLocation.this,barcodeData,Toast.LENGTH_LONG).show();
+                            if(barcodeData.equals(qrCode)){
+                                startActivity(new Intent(FindLocation.this, ShareAchievements.class));
+                            }else {
+                                Toast.makeText(FindLocation.this,"Please try again, barcodeData: "+barcodeData +" != " + qrCode,Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        // ...
+                    }
+                });
+
+
     }
 
 }
