@@ -38,12 +38,12 @@ public class LocationPicker extends AppCompatActivity {
         userLatitude = lastIntent.getDoubleExtra("userLatitude", 0);
         userLongitude = lastIntent.getDoubleExtra("userLongitude", 0);
 
-        LatLng firstSpot = new LatLng(36.995891199999996,-122.05752319999999);
+        LatLng firstSpot = new LatLng(36.996842,-122.05206063);
 
-        LatLng secondSpot = new LatLng(36.99589119,-122.0575231999);
-        LatLng thirdSpot = new LatLng(36, -122);
-        LatLng fourthSpot = new LatLng(30, -122);
-        LatLng fifthSpot = new LatLng(36,-120);
+        LatLng secondSpot = new LatLng(36.99703627,-122.05346599);
+        LatLng thirdSpot = new LatLng(36.99720275, -122.05334009);
+        LatLng fourthSpot = new LatLng(36.99759336, -122.05329262);
+        LatLng fifthSpot = new LatLng(36.99684219,-122.05183109);
         LatLng sixthSpot = new LatLng(37,-120);
 
 
@@ -74,18 +74,20 @@ public class LocationPicker extends AppCompatActivity {
 
 
         ImageButton imageButton1 = findViewById(R.id.location1);
-        imageButton1.setImageResource(R.drawable.a);
 
-        /*
+
+
         ImageButton imageButton2 = findViewById(R.id.location2);
+
         ImageButton imageButton3 = findViewById(R.id.location3);
         ImageButton imageButton4 = findViewById(R.id.location4);
+
 
         imageButton1.setImageResource(theFourClosestPic[0]);
         imageButton2.setImageResource(theFourClosestPic[1]);
         imageButton3.setImageResource(theFourClosestPic[2]);
         imageButton4.setImageResource(theFourClosestPic[3]);
-        */
+
 
     }
 
@@ -113,6 +115,7 @@ public class LocationPicker extends AppCompatActivity {
             if(tempDistance<distanceOfFour[3]){
                 fourClosest[3] = arrayOfAllLatLng.get(i);
                 distanceOfFour[3] = tempDistance;
+                fourPic[3] = arrayOfAllPictures.get(i);
                 sort(distanceOfFour,fourClosest, fourQr, fourPic);
             }
         }
