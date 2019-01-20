@@ -155,4 +155,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView6"
         app:srcCompat="@color/charcoal_dark" />
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/test"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="30dp" />
 </android.support.constraint.ConstraintLayout>
