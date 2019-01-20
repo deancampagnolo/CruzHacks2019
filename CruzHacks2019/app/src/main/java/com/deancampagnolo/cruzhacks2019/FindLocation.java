@@ -104,12 +104,15 @@ public class FindLocation extends AppCompatActivity {
 
                 counter++;
                 //weAreGettingCloserText.setText(Integer.toString(counter));
-                weAreGettingCloserText.setText("Lat: "+userLatitude+"\n" + "Lng: "+userLongitude);
-                if(counter>10){
+                //weAreGettingCloserText.setText("Lat: "+userLatitude+"\n" + "Lng: "+userLongitude);
+
+                if(counter>5){//counter is at "6"
                     if(weAreGettingCloser(userLatitude,userLongitude)){
                         gettingCloserColor = Color.GREEN;
+                        weAreGettingCloserText.setText("You are walking towards the landmark!");
                     }else{
                         gettingCloserColor = Color.RED;
+                        weAreGettingCloserText.setText("You are walking away from the landmark!");
                     }
                     counter = 0;
                     weAreGettingCloserText.setTextColor(gettingCloserColor);

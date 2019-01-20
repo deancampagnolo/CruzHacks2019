@@ -116,6 +116,7 @@ public class LocationPicker extends AppCompatActivity {
                 fourClosest[3] = arrayOfAllLatLng.get(i);
                 distanceOfFour[3] = tempDistance;
                 fourPic[3] = arrayOfAllPictures.get(i);
+                fourQr[3] = arrayOfAllQrCodes.get(i);
                 sort(distanceOfFour,fourClosest, fourQr, fourPic);
             }
         }
